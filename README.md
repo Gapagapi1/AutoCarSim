@@ -1,6 +1,6 @@
 # Urban Autonomous Vehicle Simulation Demonstration
 
-![Cover Image](cover_image.png)
+![Cover Image](images/cover_image.png)
 
 ## Overview
 

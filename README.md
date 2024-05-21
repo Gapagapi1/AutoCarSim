@@ -1,26 +1,50 @@
 # Urban Autonomous Vehicle Simulation Demonstration
 
-![Cover Image](images/cover_image.png)
+<p align="center"> <img src="images/cover_image.png" alt="cover_image.png"/> </p>
 
 ## Overview
 
-This page is dedicated to presenting a project I have worked on from February 2022 to June 2023. Its goal is to determine, through experimentation, the necessary characteristics for an autonomous vehicle algorithm model using deep reinforcement learning, to study the relevance of its training in a virtual urban simulation, and to demonstrate the effectiveness of this algorithm by measuring the degree of complexity to which its response is satisfactory.
+This page presents a project I have worked on from February 2022 to June 2023. Its goal is to determine, through experimentation, necessary characteristics for an autonomous vehicle algorithm model using deep reinforcement learning, to study the relevance of its training in a virtual urban simulation, and to demonstrate the effectiveness of this algorithm by measuring the degree of complexity to which its response is satisfactory.
 
-This project consists in multiple parts, an urban simulation and a vehicle physics simulation made with [Unity](https://unity.com) and and an AI algorithm based on the [ML-Agents toolkit](https://github.com/Unity-Technologies/ml-agents).
+This project consists in several components, an urban simulation and a vehicle physics simulation created using [Unity](https://unity.com), as well as an AI algorithm developed with the [ML-Agents toolkit](https://github.com/Unity-Technologies/ml-agents).
 
 Here is the roadmap of the project:
 
-- Develop a virtual vehicle with a realistic appearance and behavior by designing its 3D model and simulating its mechanical parts and physics in Unity.
-- Create an artificial intelligence algorithm using ML-Agents for this vehicle. The aim will be to update its parameters through the study of its behavior in environments of increasing complexity until it can navigate in a virtual urban environment.
-- Design a program capable of generating a realistic urban environment using the free cartographic database [OpenStreetMap](https://www.openstreetmap.org).
+- Develop a virtual vehicle with a realistic appearance and behavior by designing its 3D model and simulating its mechanical components and physics in Unity.
+- Create an AI algorithm using ML-Agents for this vehicle, aimed at refining its parameters through behavior analysis in progressively complex environments until it can proficiently navigate a virtual urban setting.
+- Design a program to generate a realistic urban environment using the free cartographic database [OpenStreetMap](https://www.openstreetmap.org).
 
-The different tools used and the directions taken by this project are the result of a study on the subject which you can find [here](#bibliography--project-justification).
+The methodologies and tools employed in this project are the result of a bibliographical study available [here](#bibliography--project-justification).
 
 ## Table of Contents
 
+- [Overview](#overview)
+- [Table of Contents](#table-of-contents)
+- [Project Motivation](#project-motivation)
+- [Project Presentation \& Current State](#project-presentation--current-state)
+- [Introduction](#introduction)
+  - [Goals of the Simulation](#goals-of-the-simulation)
+  - [Basic Features](#basic-features)
+- [Vehicle Simulation](#vehicle-simulation)
+  - [The Chassis](#the-chassis)
+  - [The Mechanical Aspects](#the-mechanical-aspects)
+- [City Modeling](#city-modeling)
+  - [Operating Principle](#operating-principle)
+  - [A\* Search Algorithm](#a-search-algorithm)
+- [Autonomous Vehicle Algorithm](#autonomous-vehicle-algorithm)
+  - [Operating Principle (Deep Reinforcement Learning)](#operating-principle-deep-reinforcement-learning)
+  - [First Training Environment](#first-training-environment)
+  - [Second Training Environment](#second-training-environment)
+  - [Training in the City](#training-in-the-city)
+- [Results and Conclusion](#results-and-conclusion)
+- [Work Timeline](#work-timeline)
+- [Bibliography \& Project Justification](#bibliography--project-justification)
+- [Annotated Bibliography](#annotated-bibliography)
+- [References](#references)
+  
 ## Project Motivation
 
-Autonomous vehicles engage multiple facets of artificial intelligence. Their simulation in an urban setting requires a computational approach involving the use of a physical and graphical engine to simulate vehicle operations, and mathematical algorithms to generate an urban environment. The components of this interdisciplinary project have captivated my interest.
+Autonomous vehicles engage multiple apsects of artificial intelligence. Their simulation in an urban setting requires a computational approach involving the use of a physical and graphical engine to simulate vehicle operations, and mathematical algorithms to generate an urban environment. The components of this interdisciplinary project have captivated my interest.
 
 The transport network is essential in a city as it provides its structure. However, it currently faces numerous challenges such as pollution, safety, and traffic congestion. Therefore, due to the potential improvements it promises, the integration of autonomous vehicles into urban traffic is poised to become a transformative development for the cities of the future.
 
@@ -30,13 +54,13 @@ The transport network is essential in a city as it provides its structure. Howev
 
 #### Goals of the Simulation
 
-This project is based on three main pillars that will serve as the plan for this Presentation.
+This project is based on three main pillars that will serve as the plan for this presentation.
 
 <p align="center"> <img src="images/pillars.png" alt="pillars.png" width="320px"/> </p>
 
-Initially, it involves designing a realistic physics model for a vehicle and, secondly, modeling a city. For this, it is necessary to use a graphic and physical engine that can simulate simple physics in a three-dimensional environment and allow us to observe this environment on a screen. I have chosen to use Unity, an engine where development is done in C# and which is renowned in the field for the creative freedom it offers. BMW has even used it to train its autonomous vehicles to travel over 240 million virtual kilometers [[3]](#ref3).
+The project begins with designing a realistic physics model for a vehicle, followed by modeling an urban environment. This necessitates the use of a graphic and physical engine capable of simulating physics in a three-dimensional space and displaying this environment on a screen. I have selected Unity for this purpose, a platform that allows development in C# and is renowned for the creative freedom it offers. Notably, BMW has used Unity to train its autonomous vehicles over 240 million virtual kilometers [[3]](#ref3).
 
-Thirdly, the task is to design an artificial intelligence model capable of navigating a vehicle through the city. I have chosen to implement this in Unity using the ML-Agents module.
+The next step involves designing an artificial intelligence model that can navigate a vehicle through the city. For this, I have chosen to implement the AI using Unity's ML-Agents module.
 
 The objectives thus stem from these three pillars.
 
@@ -44,12 +68,12 @@ The objectives thus stem from these three pillars.
 
 #### Basic Features
 
-Unity provides a camera that enables observation of the environment. What remains is to allow it to move. For this purpose, I have designed two types of cameras:
+Unity includes a camera feature that facilitates the observation of the environment. The next step was to enable camera mobility. To achieve this, I designed two types of cameras:
 
-- A pivot camera, which is attached to the car and can rotate around it like a cinema crane using two pivots.
-- And then a free camera, which can move freely like a drone or a helicopter.
+- A pivot camera, which is attached to the car and can rotate around it in a manner similar to a cinema crane, using two pivot points.
+- A free camera, which can move independently like a drone or helicopter, offering extensive versatility in viewing angles.
 
-It was also necessary to develop an options menu to adapt to the computing power of the computer on which the simulation is run.
+Additionally, it was necessary to develop an options menu. This menu allows users to adjust the simulation settings according to the computing power of the device on which the simulation is running.
 
 <p align="center"> <img src="images/basic features.png" alt="basic features.png" width="550px"/> </p>
 
@@ -59,25 +83,25 @@ It was also necessary to develop an options menu to adapt to the computing power
 
 The simulation of the chassis is based on two points.
 
-Firstly, it utilises the Ackermann-Jeantaud steering system that allows the two steering wheels to be inscribed on two concentric circles, thereby applying the same steering force to the vehicle. For this, we consider an imaginary wheel at the center of the vehicle that is controlled by the steering wheel, and then calculate the angle of the other two wheels relative to this central wheel.
+Firstly, it incorporates the Ackermann-Jeantaud steering system, which ensures that the two steering wheels align on two concentric circles, thereby applying the same steering force to the vehicle. The system operates by conceptualizing an imaginary wheel at the vehicle's center, which is controlled by the steering wheel. From this central point, the angles of the other two wheels are calculated to maintain the correct trajectory and steering dynamics.
 
 <p align="center"> <img src="images/ackermann-jeantaud steering.png" alt="ackermann-jeantaud steering.png" width="320px"/> </p>
 
-Next, I also simulated the wheels using a ground detection point, which is calculated by firing a detection ray from the center of the wheel towards the ground. This allows for determining the distance between the ground and the wheel and thus simulating the force of the shock absorber. Subsequently, a collision box needs to be added around the wheel, which Unity enables one to do.
+Next, I also developed a simulation for the wheels that includes a ground detection point. This point is calculated by firing a detection ray from the center of the wheel toward the ground. This technique helps determine the distance between the ground and the wheel, allowing for the accurate simulation of the shock absorber’s force as it responds to varying terrain. Subsequently, a collision box is also added around the wheel.
 
 <p align="center"> <img src="images/wheel collision.png" alt="wheel collision.png" width="320px"/> </p>
 
 #### The Mechanical Aspects
 
-This car, which is rear-wheel drive, is modeled as a set of four components: the engine, the transmission, the differential, and the driving wheels.
+This rear-wheel drive car is modeled using four main components: the engine, the transmission, the differential, and the driving wheels.
 
 <p align="center"> <img src="images/vehicle parts.png" alt="vehicle parts.png" width="640px"/> </p>
 
-First, we model the transmission and the differential as systems of two gears, for which we calculate the gear ratio between the output and input gears, denoted as r.
+The transmission and the differential are conceptualized as a system of two gears. The gear ratio, denoted as *r*, is calculated between the output and input gears to establish how the power and torque are transmitted through these components.
 
-The engine simulation is based on a cycle. In fact, by tracing back through the transmission, the engine's rotation speed can be determined by averaging the rotation speed of the driving wheels, since this car is rear-wheel drive.
+The engine simulation is based on a cyclical process. By tracing back through the transmission, the engine's rotation speed can be determined by averaging the rotation speeds of the driving wheels.
 
-From this engine rotation speed, we read the force applied by the engine on the torque curve provided by the vehicle's manufacturer. It is then necessary to trace back down the transmission following the same principle and apply half of the calculated force to each of the two wheels.
+Once the engine's rotation speed is known, the force exerted by the engine is determined from the torque curve provided by the vehicle's manufacturer. This force is then traced back down through the transmission in a similar fashion. Ultimately, half of the calculated force is applied to each of the driving wheels.
 
 <p align="center"> <img src="images/formula explanation.png" alt="formula explanation.png" width="840px"/> </p>
 
@@ -85,9 +109,9 @@ From this engine rotation speed, we read the force applied by the engine on the 
 
 <p align="center"> <img src="images/engine torque curve.png" alt="engine torque curve.png" width="420px"/>   <img src="images/engine power curve.png" alt="engine power curve.png" width="420px"/> </p>
 
-After simulating the engine, it is also necessary to simulate the gearbox. This gearbox is modeled as a list of gear ratios that can be selected, which change the transmission ratio accordingly.
+After simulating the engine, it is also necessary to simulate the gearbox. This gearbox is represented as a list of selectable gear ratios that adjust the transmission ratio accordingly.
 
-This gearbox must be able to operate automatically to facilitate the task of the artificial intelligence algorithm. To achieve this, the aim is to maximize the power provided by the engine, and thus shift up when the maximum power is exceeded using this formula.
+To facilitate the operation of the AI algorithm, the gearbox is designed to function automatically. The primary goal is to maximize the engine’s power output. Therefore, the gearbox is programmed to automatically shift up when the power output exceeds a predetermined maximum.
 
 ### City Modeling
 
@@ -95,19 +119,17 @@ This gearbox must be able to operate automatically to facilitate the task of the
 
 #### Operating Principle
 
-After numerous attempts, I ultimately decided to use a real city database to train the algorithm under the best possible conditions.
+After exploring various options, I ultimately decided to use a real city database to train the algorithm under optimal conditions.
 
-I opted for the free cartographic database [OpenStreetMap](https://www.openstreetmap.org), which provides us with three types of elements: points (coordinates), roads (non-cyclic successions of points), and buildings (cyclic successions of points).
+I chose the free cartographic database [OpenStreetMap](https://www.openstreetmap.org), which provides three main types of elements: points, which are specific coordinates; roads, which are defined as non-cyclic successions of points, effectively mapping out the transportation network; and buildings, which are represented as cyclic successions of points, outlining their perimeters.
 
 <p align="center"> <img src="images/reading roads from openstreetmap 1.png" alt="reading roads from openstreetmap 1.png" width="320px"/>      <img src="images/reading roads from openstreetmap 2.png" alt="reading roads from openstreetmap 2.png" width="320px"/> </p>
 
-The next step involves triangulating these elements since, obviously, the computer and especially the graphics card, only understands triangles.
+The next step involves triangulating the map elements. Triangulation is necessary because computers, and particularly graphics cards, interpret visual data primarily as triangles.
 
-Some elements are simple to triangulate, such as roads or walls, which are represented by rectangles.
+Simpler geometric shapes, like roads or walls, which are essentially rectangles, are relatively straightforward to triangulate. However, more complex structures, such as tunnels or building roofs, require a sophisticated approach due to their irregular shapes.
 
-For more complex cases, such as tunnels or building roofs, a triangulation algorithm is required. I chose to implement [Seidel's algorithm](#ref10) from 1991.
-
-Here is how a polygon is represented and some examples of triangulated polygons with this algorithm.
+To handle these complex cases, I opted to implement [Seidel's algorithm](#ref10), a triangulation method developed in 1991. This algorithm decomposes polygons into trapezoid, even for polygons with multiple holes and intricate outlines. Below, I have illustrated how a polygon is represented and provided examples of polygons that have been triangulated using Seidel's algorithm.
 
 <p align="center"> <img src="images/seidel traingulation example.png" alt="seidel traingulation example.png" width="420px"/> </p>
 
@@ -115,118 +137,120 @@ Here is how a polygon is represented and some examples of triangulated polygons 
 
 #### A* Search Algorithm
 
-To enable the algorithm to navigate through the city, it is necessary to be able to traverse the city using roads. For this, I utilized the A* search algorithm, which is a graph traversal algorithm.
+To enable the algorithm to efficiently navigate through the city using roads, I incorporated the A* search algorithm, a widely used graph traversal method that is particularly effective for pathfinding on weighted graphs.
 
-This algorithm works with a heuristic calculated as follows: for each considered point, the sum of the distance from this point to the starting point A and the distance from this point to the destination point B is computed.
+The A* algorithm operates using a heuristic to determine the most promising path to follow. The heuristic is calculated for each node and consists of the sum of two distances: the distance from the node to the starting point *A*, and the estimated distance from the node to the destination point *B*.
 
-Here is an example directly taken from the city, with numbers representing distances and, for each point considered by the algorithm, the calculation of the heuristic cost.
+Here's an example illustrating this concept using actual city data, with numerical values representing the two distances and the calculated heuritic cost.
 
 <p align="center"> <img src="images/a star shearch algorithm explanation.png" alt="a star shearch algorithm explanation.png" width="840px"/> </p>
 
-The principle involves examining the neighbors of the considered point and continuing with the point that has the lowest heuristic cost.
+The core principle of the A* algorithm is to examine the neighbors of the currently considered point and to continue the search from the point that has the lowest heuristic cost.
 
-In this way, the study of many points is avoided, which, on the scale of a city, saves a significant amount of time.
+This method of selectively exploring nodes significantly reduces the number of points that need to be examined. When applied to the scale of an entire city, this can save a considerable amount of computational time and resources.
 
 ### Autonomous Vehicle Algorithm
 
 #### Operating Principle (Deep Reinforcement Learning)
 
-There are two groups of algorithms: those that learn to reproduce a database, like recurrent neural networks for text, and those that independently explore an environment using a reward function.
+In the realm of AI algorithms, there are several major categories, each suited to different types of problems and data. One major category includes algorithms like Recurrent Neural Networks (RNNs), which are used primarily for tasks that involve learning from sequential data, such as text generation or speech recognition. These algorithms learn to recognize and reproduce patterns based on extensive datasets. Another significant category is Reinforcement Learning (RL), where algorithms learn to make a sequence of decisions by interacting with an environment and receiving feedback in the form of a reward function.
 
-I have chosen to use this second group of algorithms, specifically a deep reinforcement learning algorithm, because there is no database of vehicles driving in a city and the algorithm must be able to adapt to situations it has never encountered before.
+For this project, I selected the second group, specifically opting for a deep reinforcement learning algorithm. The rationale behind this choice is that there isn't an existing database of vehicles navigating through city environments. Furthermore, the scenarios a vehicle might encounter in real-world urban driving are highly variable and unpredictable, requiring an algorithm that can dynamically adapt to new situations it has never encountered before.
 
-Here is the operating principle of such an algorithm (the color code will be retained for further explanations).
+Here is the operating principle of a deep reinforcement learning algorithm (the color code will be retained for further explanations).
 
 <p align="center"> <img src="images/deep reinforcement learning simple explanation.png" alt="deep reinforcement learning simple explanation.png" width="640px"/> </p>
 
 The deep reinforcement learning algorithm operates in three stages:
 
-- Observations, in the form of values representing the learning environment, which the algorithm can use to solve the problem it faces. When these values are vectors, it is strongly advised, through experience, that they be expressed in the vehicle’s reference frame.
-- Actions that correspond to acts performed by the algorithm to explore its environment and solve the problem.
-- Rewards, which is a kind of score given to each action of the algorithm to let it know whether what it is doing is good or not. This part is very important as it ensures that the algorithm does what we want. This stage also helps to understand the workings of such an algorithm: its goal is to maximize this reward.
+- **Observations**: These are values representing the learning environment, which the algorithm uses to make informed decisions. Observations typically come in the form of vectors and, based on experience, it is better to express these in the vehicle’s reference frame. This alignment helps the algorithm better understand and react to its surroundings from the perspective of the vehicle itself.
+- **Actions**: These are the maneuvers that the algorithm performs to interact with and explore its environment. Actions could include turning, accelerating, or braking, each chosen based on the algorithm's current understanding of the environment to effectively navigate and achieve specific objectives.
+- **Rewards**: This is a scoring system that evaluates each action taken by the algorithm. Rewards are crucial as they provide immediate feedback to the algorithm, indicating whether an action has moved it closer to or further from its goal. The fundamental aim of the algorithm is to maximize these rewards.
 
-The goal is to train the algorithm in increasingly complex environments until it succeeds in navigating through the city.
+The goal of this process is to progressively train the algorithm in environments of increasing complexity until it succeeds in navigating through the city.
 
 #### First Training Environment
 
-The purpose of the first training environment is to teach the algorithm to control the vehicle. The vehicle is thus placed on a finite, flat platform, and its goal is to head towards an arrow.
+The initial training environment for the deep reinforcement learning algorithm is designed to teach basic vehicle control. In this setup, the vehicle is positioned on a finite, flat platform with a simple goal: to head towards an arrow placed in the environment. This foundational setup helps the algorithm grasp the basic mechanics of vehicle movement and steering.
 
 The following observations are provided to the algorithm: the direction towards the arrow and the speed of the vehicle.
 
-In my first attempt, the algorithm was rewarded the closer it was to the arrow. However, it often encountered this situation: if the vehicle moves forward, it moves away from the arrow, and the same happens if it moves backward, and its turning radius is not tight enough to head towards the arrow without first moving away from it. It then considers that it has reached a local maximum of the reward function and stops evolving.
+Initially, the algorithm's reward strategy was straightforward: it received higher rewards the closer it got to the arrow. However, this approach led to a significant issue. Indeed, the algorithm often encountered the following situation: if the vehicle moved forward or backward, it moves away from the arrow due to insufficient turning radius, and thus the algorithm prematurely concludes it had reached a local maximum in the reward function, stalling further progress.
 
-I then opted to reward it the more it heads towards the arrow using a dot product. This reward function worked well. As you can see, it is weighted by the vehicle’s speed (The faster the vehicle goes, the better).
+To address this, I modified the reward function to focus not just on proximity but on the vehicle's orientation relative to the arrow. This was implemented using a dot product between the vehicle's heading and the direction to the arrow, rewarding the vehicle more when it faces directly towards the arrow. This reward is further weighted by the vehicle’s speed: the faster the vehicle moves in the correct direction, the higher the reward. This method proved successful.
 
 <p align="center"> <img src="images/first training environment.png" alt="first training environment.png" width="1100px"/> </p>
 
 #### Second Training Environment
 
-The purpose of the second training environment is to teach the algorithm to avoid obstacles.
+In the second training environment, the focus shifts to teaching the algorithm how to effectively avoid obstacles.
 
-Therefore, detection rays are added to the previous observations. The reward is decreased as the vehicle gets closer to an obstacle to teach it to avoid them.
+Therefore, detection rays are added to the vehicle's sensory array. These rays function as proximity sensors, detecting obstacles around the vehicle.
 
-This reward is now weighted by the base-2 logarithm of the distance between the car and the arrow (The closer the vehicle is, the better, because the goal is not to go fast in the city).
+The reward system is adjusted to discourage the vehicle from getting too close to obstacles.
+
+To further refine the vehicle's behavior, the reward is now also weighted by the base-2 logarithm of the distance between the car and the arrow. This weighting reflects the dual objectives of the training: maintaining proximity to the target while prioritizing slower, more controlled movements. The closer the vehicle is to the arrow, the greater the reward, emphasizing that the goal in an urban setting is not just speed but also precision and safety.
 
 <p align="center"> <img src="images/second training environment.png" alt="second training environment.png" width="1100px"/> </p>
 
 #### Training in the City
 
-After setting up everything we've just discussed, the algorithm is now ready to navigate the city.
+Now that the algorithm has been trained in both vehicle control and obstacle avoidance, it is ready to start training in the city.
 
 <p align="center"> <img src="images/from simple environment to the city.png" alt="from simple environment to the city.png" width="510px"/> </p>
 
-I have noticed three cases where it does not behave as one might wish.
+I have noticed three cases where it does not behave as expected.
 
-First, the car tends to drive on the right side of the road to reach the arrow at the end. I think it does this to avoid a potential wall placed right after the arrow.
+First, the car tends to drive on the right side to reach the destination arrow, likely as a strategy to avoid any potential obstacles, such as a wall, immediately after the arrow. This behavior indicates that while the algorithm is effectively avoiding obstacles, it may be over-prioritizing this avoidance in certain scenarios, leading to suboptimal path choices.
 
 <p align="center"> <img src="images/issue 1.png" alt="issue 1.png" width="840px"/> </p>
 
-Next, there are bridges in the city, and the algorithm has no information about them. Therefore, it tends to look for the arrow under the bridges.
+Next, the lack of specific data about bridges means the algorithm does not recognize them. Consequently, it searches for the arrow underneath these structures. This behavior highlights a gap in the data provided to the algorithm, which if filled, could significantly enhance its navigation accuracy.
 
 <p align="center"> <img src="images/issue 2.png" alt="issue 2.png" width="840px"/> </p>
 
-Similarly, when possible, it prefers to go around buildings, thus avoiding a path that would make it drive close to obstacles.
+The algorithm prefers to circumvent buildings entirely, rather than passing closely by them, suggesting it is applying its obstacle avoidance training effectively. However, this also means it might choose longer or less direct paths if these are perceived as safer or clearer.
+
+This behavior is not necessarily foolish; in fact, it's quite clever given that the algorithm is not specifically instructed to follow the roads. This highlights a clear path for further improvement.
 
 <p align="center"> <img src="images/issue 3.png" alt="issue 3.png" width="840px"/> </p>
 
-This is not particularly foolish; it is actually quite smart since we do not ask it to follow the roads. This would therefore be a path for improvement.
+The algorithm sometimes encounters complex situations where it chooses to stop moving rather than risk colliding with an obstacle.
 
 ### Results and Conclusion
 
-In the third environment, it is noted that there are complex situations in which the algorithm gets stuck and no longer moves. It actually prefers to stop moving rather than encounter an obstacle.
+Several short-term improvements are possible:
 
-As we have already mentioned, several short-term improvements are conceivable:
+- Introducing additional targets to improve anticipation.
+- Adjusting the sensitivity of the sensors, as the algorithm tends to be overly cautious.
+- Encouraging the algorithm to follow roads.
+- Allowing more time for the algorithm to train and adapt.
 
-- Adding targets for better anticipation
-- Adjusting the sensitivity of the sensors (since the algorithm tends to be overly cautious of obstacles)
-- Encouraging the algorithm to follow roads (which has already been discussed)
-- And of course, allowing more time for the algorithm to train
+Long-term enhancements could include:
 
-Long-term improvements can also be considered, such as:
-
-- Adding multiple vehicles in the city at the same time.
-- Further complicating the city: crosswalks, traffic lights, pedestrians, etc.
+- Introducing multiple vehicles to navigate the city simultaneously.
+- Increasing the complexity of the urban environment with crosswalks, traffic lights, pedestrians, and other elements.
 
 <p align="center"> <img src="images/ai algorithm improvement.png" alt="ai algorithm improvement.png" width="510px"/> </p>
 
 ## Work Timeline
 
-- February 2022: 3D modeling of a car and a bus in Tinkercad to have different types of vehicles suitable for Unity. Development of the pivot camera and the first vehicle physics capable of simulating shock absorbers, steering, traction, and torque application to the wheels.
+- **February 2022**: 3D modeling of a car and a bus in Tinkercad to create different types of vehicles suitable for Unity. Development of the pivot camera and the first vehicle physics capable of simulating shock absorbers, steering, traction, and torque application to the wheels.
   <p align="center"> <img src="images/car.png" alt="car.png" width="510px"/>      <img src="images/bus.png" alt="bus.png" width="510px"/> </p>
   <iframe width="560px" height="315px" src="https://www.youtube.com/embed/OIMsVea8WSc?si=KVLCFw2Pr-H-mu8R" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-- March 2022: Design and training of the first artificial intelligence algorithm with ML-Agents aimed at controlling the vehicle to reach a point on a flat surface. Identification of the algorithm’s flaws and improvement of its reward function and observations.
+- **March 2022**: Design and training of the first AI algorithm with ML-Agents aimed at controlling the vehicle to reach a point on a flat surface. Identification of the algorithm’s flaws and improvement of its reward function and observations.
   <p align="center"> <img src="images/first environment.png" alt="first environment.png" width="1100px"/> </p>
-- Early April 2022: Development of a system that allows multiple vehicles on different computers to operate in the same environment, in preparation for their interaction, using Photon Engine (a host enabling packet transfer from Unity to a server), a feature that was ultimately unused.
+- **Early April 2022**: Development of a system that allows multiple vehicles on different computers to interact in the same environment using Photon Engine (a host enabling packet transfer from Unity to a server), a feature that was ultimately unused.
   <p align="center"> <iframe width="560" height="315" src="https://www.youtube.com/embed/SGfBIGyRfQQ?si=oJv5-xVyYfAWDcui" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> </p>
-- April, May, June 2022: Attempts to model the city, initially using Google Earth and RenderDoc, then using OpenStreetMap with the Python module pyrosm and Blender, and finally directly in Unity using OpenStreetMap through the OsmSharp module.
+- **April, May, June 2022**: Attempts to model the city, initially using Google Earth and RenderDoc, then using OpenStreetMap with the Python module pyrosm and Blender, and finally directly in Unity using OpenStreetMap through the OsmSharp module.
   <p align="center"> <img src="images/blender city.png" alt="blender city.png" width="840px"/>      <img src="images/blender render city.png" alt="blender render city.png" width="640px"/> </p>
-- December 2022: Implementation of a free camera and simulation of the vehicle engine based on its torque as a function of its revolutions per minute (using Bézier curves to approximate the data), and of the manual or automatic gearbox and the Ackermann-Jeantaud steering system.
+- **December 2022**: Implementation of a free camera and simulation of the vehicle engine based on its torque as a function of its revolutions per minute (using Bézier curves to approximate the data). Development of the manual or automatic gearbox and the Ackermann-Jeantaud steering system.
   <iframe width="560" height="315" src="https://www.youtube.com/embed/7ZK4zMeQxKs?si=v8jgR5zfjKe3N1H0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-- January 2023: Design and training of the second artificial intelligence algorithm, now capable of observing its environment using obstacle detection rays to avoid them.
+- **January 2023**: Design and training of the second AI algorithm, now capable of observing its environment using obstacle detection rays to avoid them.
   <p align="center"> <img src="images/second environment.png" alt="second environment.png" width="1100px"/> </p>
-- February, resumed mid-May 2023: Modeling of the city using OpenStreetMap data in XML format and representing it with a data structure suitable for Unity. Triangulation of this data (notably with Seidel's algorithm) to transform it into 3D models.
+- **February, resumed mid-May 2023**: Modeling of the city using OpenStreetMap data in XML format and representing it with a data structure suitable for Unity. Triangulation of this data (notably with Seidel's algorithm) to transform it into 3D models.
   <p align="center"> <img src="images/city model example 2.png" alt="city model example 2.png" width="1100px"/> </p>
-- Late May, early June 2023: Design and training of the artificial intelligence algorithm with the goal of operating in an urban environment. Implementation of the A* algorithm for fast pathfinding between two points in the city, providing the artificial intelligence algorithm with the steps of its route.
+- **Late May, early June 2023**: Design and training of the AI algorithm with the goal of operating in an urban environment. Implementation of the A* algorithm for fast pathfinding between two points in the city, providing the AI algorithm with the steps of its route.
 
 ## Bibliography & Project Justification
 
@@ -252,7 +276,3 @@ Indeed, the Unity graphics and physics engine allows for the creation of three-d
 - <a id="ref8"></a>[8] XIAOHU LI, ZEHONG CAO AND QUAN BAI : A Novel Mountain Driving Unity Simulated Environment for Autonomous Vehicles : <https://www.aaai.org/AAAI21Papers/DEMO-265.LiX.pdf>
 - <a id="ref9"></a>[9] JOHN SCHULMAN, FILIP WOLSKI, PRAFULLA DHARIWAL, ALEC RADFORD AND OLEG KLIMOV : Proximal Policy Optimization Algorithms : <https://arxiv.org/pdf/1707.06347.pdf>
 - <a id="ref10"></a>[10] RAIMUND SEIDEL : A simple and fast incremental randomized algorithm for computing trapezoidal decompositions and for triangulating polygons : <https://doi.org/10.1016/0925-7721(91)90012-4>
-
-## Image Gallery
-
-

@@ -16,31 +16,33 @@ Here is the roadmap of the project:
 
 The methodologies and tools employed in this project are the result of a bibliographical study available [here](#bibliography--project-justification).
 
-## Table of Contents
+See [Results and Conclusion](#results-and-conclusion) for a drive through the city with the AI.
 
+## Table of Contents
+- 
 - [Overview](#overview)
 - [Table of Contents](#table-of-contents)
 - [Project Motivation](#project-motivation)
 - [Project Presentation \& Current State](#project-presentation--current-state)
-- [Introduction](#introduction)
-  - [Goals of the Simulation](#goals-of-the-simulation)
-  - [Basic Features](#basic-features)
-- [Vehicle Simulation](#vehicle-simulation)
-  - [The Chassis](#the-chassis)
-  - [The Mechanical Aspects](#the-mechanical-aspects)
-- [City Modeling](#city-modeling)
-  - [Operating Principle](#operating-principle)
-  - [A\* Search Algorithm](#a-search-algorithm)
-- [Autonomous Vehicle Algorithm](#autonomous-vehicle-algorithm)
-  - [Operating Principle (Deep Reinforcement Learning)](#operating-principle-deep-reinforcement-learning)
-  - [First Training Environment](#first-training-environment)
-  - [Second Training Environment](#second-training-environment)
-  - [Training in the City](#training-in-the-city)
-- [Results and Conclusion](#results-and-conclusion)
+  - [Introduction](#introduction)
+    - [Goals of the Simulation](#goals-of-the-simulation)
+    - [Basic Features](#basic-features)
+  - [Vehicle Simulation](#vehicle-simulation)
+    - [The Chassis](#the-chassis)
+    - [The Mechanical Aspects](#the-mechanical-aspects)
+  - [City Modeling](#city-modeling)
+    - [Operating Principle](#operating-principle)
+    - [A\* Search Algorithm](#a-search-algorithm)
+  - [Autonomous Vehicle Algorithm](#autonomous-vehicle-algorithm)
+    - [Operating Principle (Deep Reinforcement Learning)](#operating-principle-deep-reinforcement-learning)
+    - [First Training Environment](#first-training-environment)
+    - [Second Training Environment](#second-training-environment)
+    - [Training in the City](#training-in-the-city)
+  - [Results and Conclusion](#results-and-conclusion)
 - [Work Timeline](#work-timeline)
 - [Bibliography \& Project Justification](#bibliography--project-justification)
-- [Annotated Bibliography](#annotated-bibliography)
-- [References](#references)
+  - [Annotated Bibliography](#annotated-bibliography)
+  - [References](#references)
   
 ## Project Motivation
 
@@ -95,7 +97,7 @@ Next, I also developed a simulation for the wheels that includes a ground detect
 
 This rear-wheel drive car is modeled using four main components: the engine, the transmission, the differential, and the driving wheels.
 
-<p align="center"> <img src="images/vehicle parts.png" alt="vehicle parts.png" width="640px"/> </p>
+<p align="center"> <img src="images/vehicle parts.png" alt="vehicle parts.png" width="510px"/> </p>
 
 The transmission and the differential are conceptualized as a system of two gears. The gear ratio, denoted as *r*, is calculated between the output and input gears to establish how the power and torque are transmitted through these components.
 
@@ -103,15 +105,17 @@ The engine simulation is based on a cyclical process. By tracing back through th
 
 Once the engine's rotation speed is known, the force exerted by the engine is determined from the torque curve provided by the vehicle's manufacturer. This force is then traced back down through the transmission in a similar fashion. Ultimately, half of the calculated force is applied to each of the driving wheels.
 
-<p align="center"> <img src="images/formula explanation.png" alt="formula explanation.png" width="840px"/> </p>
+<p align="center"> <img src="images/formula explanation.png" alt="formula explanation.png" width="720px"/> </p>
 
-<p align="center"> <img src="images/power formula.png" alt="power formula.png" width="320px"/> </p>
+<p align="center"> <img src="images/power formula.png" alt="power formula.png" width="260px"/> </p>
 
-<p align="center"> <img src="images/engine torque curve.png" alt="engine torque curve.png" width="420px"/>   <img src="images/engine power curve.png" alt="engine power curve.png" width="420px"/> </p>
+<p align="center"> <img src="images/engine torque & power curve.png" alt="engine torque & power curve.png" width="720px"/> </p>
 
 After simulating the engine, it is also necessary to simulate the gearbox. This gearbox is represented as a list of selectable gear ratios that adjust the transmission ratio accordingly.
 
 To facilitate the operation of the AI algorithm, the gearbox is designed to function automatically. The primary goal is to maximize the engine’s power output. Therefore, the gearbox is programmed to automatically shift up when the power output exceeds a predetermined maximum.
+
+<p align="center"> <a href="https://www.youtube.com/watch?v=7L0FNNsPWI8&list=PLuN-LNrfuteuvsmLg5ah5AkHaiBfrwKU5"> <img src="images/Youtube - GapaDedi Race (Vehicle Simulation & Multicar Demo).png" alt="Youtube - GapaDedi Race (Vehicle Simulation & Multicar Demo).png" width="640px"/> </a> </p>
 
 ### City Modeling
 
@@ -123,7 +127,7 @@ After exploring various options, I ultimately decided to use a real city databas
 
 I chose the free cartographic database [OpenStreetMap](https://www.openstreetmap.org), which provides three main types of elements: points, which are specific coordinates; roads, which are defined as non-cyclic successions of points, effectively mapping out the transportation network; and buildings, which are represented as cyclic successions of points, outlining their perimeters.
 
-<p align="center"> <img src="images/reading roads from openstreetmap 1.png" alt="reading roads from openstreetmap 1.png" width="320px"/>      <img src="images/reading roads from openstreetmap 2.png" alt="reading roads from openstreetmap 2.png" width="320px"/> </p>
+<p align="center"> <img src="images/reading roads from openstreetmap.png" alt="reading roads from openstreetmap.png" width="640px"/> </p>
 
 The next step involves triangulating the map elements. Triangulation is necessary because computers, and particularly graphics cards, interpret visual data primarily as triangles.
 
@@ -133,7 +137,7 @@ To handle these complex cases, I opted to implement [Seidel's algorithm](#ref10)
 
 <p align="center"> <img src="images/seidel traingulation example.png" alt="seidel traingulation example.png" width="420px"/> </p>
 
-<p align="center"> <img src="images/seidel triangulation demo 1.png" alt="seidel triangulation demo 1.png" width="510px"/>      <img src="images/seidel triangulation demo 2.png" alt="seidel triangulation demo 2.png" width="510px"/> </p>
+<p align="center"> <img src="images/seidel triangulation demo.png" alt="seidel triangulation demo.png" width="1100px"/> </p>
 
 #### A* Search Algorithm
 
@@ -143,7 +147,7 @@ The A* algorithm operates using a heuristic to determine the most promising path
 
 Here's an example illustrating this concept using actual city data, with numerical values representing the two distances and the calculated heuritic cost.
 
-<p align="center"> <img src="images/a star shearch algorithm explanation.png" alt="a star shearch algorithm explanation.png" width="840px"/> </p>
+<p align="center"> <img src="images/a star shearch algorithm explanation.png" alt="a star shearch algorithm explanation.png" width="720px"/> </p>
 
 The core principle of the A* algorithm is to examine the neighbors of the currently considered point and to continue the search from the point that has the lowest heuristic cost.
 
@@ -171,6 +175,9 @@ The goal of this process is to progressively train the algorithm in environments
 
 #### First Training Environment
 
+<p align="center"> <a href="https://www.youtube.com/watch?v=ZUbXy06M4h0&list=PLuN-LNrfuteuvsmLg5ah5AkHaiBfrwKU5"> <img src="images/Youtube - First Environment (Embarrassing Training).png" alt="Youtube - First Environment (Embarrassing Training).png" width="640px"/> </a> </p>
+<p align="center"> <a href="https://www.youtube.com/watch?v=xJbJ6_DAfpw&list=PLuN-LNrfuteuvsmLg5ah5AkHaiBfrwKU5"> <img src="images/Youtube - First Training.png" alt="Youtube - First Training.png" width="640px"/> </a> </p>
+
 The initial training environment for the deep reinforcement learning algorithm is designed to teach basic vehicle control. In this setup, the vehicle is positioned on a finite, flat platform with a simple goal: to head towards an arrow placed in the environment. This foundational setup helps the algorithm grasp the basic mechanics of vehicle movement and steering.
 
 The following observations are provided to the algorithm: the direction towards the arrow and the speed of the vehicle.
@@ -182,6 +189,8 @@ To address this, I modified the reward function to focus not just on proximity b
 <p align="center"> <img src="images/first training environment.png" alt="first training environment.png" width="1100px"/> </p>
 
 #### Second Training Environment
+
+<p align="center"> <a href="https://www.youtube.com/watch?v=OsgVNlwm_F8&list=PLuN-LNrfuteuvsmLg5ah5AkHaiBfrwKU5"> <img src="images/Youtube - Second Training.png" alt="Youtube - Second Training.png" width="640px"/> </a> </p>
 
 In the second training environment, the focus shifts to teaching the algorithm how to effectively avoid obstacles.
 
@@ -197,7 +206,7 @@ To further refine the vehicle's behavior, the reward is now also weighted by the
 
 Now that the algorithm has been trained in both vehicle control and obstacle avoidance, it is ready to start training in the city.
 
-<p align="center"> <img src="images/from simple environment to the city.png" alt="from simple environment to the city.png" width="510px"/> </p>
+<p align="center"> <img src="images/from simple environment to the city.png" alt="from simple environment to the city.png" width="420px"/> </p>
 
 I have noticed three cases where it does not behave as expected.
 
@@ -219,6 +228,8 @@ The algorithm sometimes encounters complex situations where it chooses to stop m
 
 ### Results and Conclusion
 
+<p align="center"> <a href="https://www.youtube.com/watch?v=tofcTEfplj4&list=PLuN-LNrfuteuvsmLg5ah5AkHaiBfrwKU5"> <img src="images/Youtube - Drive through the city with the AI.png" alt="Youtube - Drive through the city with the AI.png" width="640px"/> </a> </p>
+
 Several short-term improvements are possible:
 
 - Introducing additional targets to improve anticipation.
@@ -236,16 +247,16 @@ Long-term enhancements could include:
 ## Work Timeline
 
 - **February 2022**: 3D modeling of a car and a bus in Tinkercad to create different types of vehicles suitable for Unity. Development of the pivot camera and the first vehicle physics capable of simulating shock absorbers, steering, traction, and torque application to the wheels.
-  <p align="center"> <img src="images/car.png" alt="car.png" width="510px"/>      <img src="images/bus.png" alt="bus.png" width="510px"/> </p>
-  <iframe width="560px" height="315px" src="https://www.youtube.com/embed/OIMsVea8WSc?si=KVLCFw2Pr-H-mu8R" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <p align="center"> <img src="images/car & bus.png" alt="car & bus.png" width="1100px"/> </p>
+  <p align="center"> <a href="https://www.youtube.com/watch?v=OIMsVea8WSc&list=PLuN-LNrfuteuvsmLg5ah5AkHaiBfrwKU5"> <img src="images/Youtube - Car Modelling Timelaps.png" alt="Youtube - Car Modelling Timelaps.png" width="640px"/> </a> </p>
 - **March 2022**: Design and training of the first AI algorithm with ML-Agents aimed at controlling the vehicle to reach a point on a flat surface. Identification of the algorithm’s flaws and improvement of its reward function and observations.
   <p align="center"> <img src="images/first environment.png" alt="first environment.png" width="1100px"/> </p>
 - **Early April 2022**: Development of a system that allows multiple vehicles on different computers to interact in the same environment using Photon Engine (a host enabling packet transfer from Unity to a server), a feature that was ultimately unused.
-  <p align="center"> <iframe width="560" height="315" src="https://www.youtube.com/embed/SGfBIGyRfQQ?si=oJv5-xVyYfAWDcui" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe> </p>
+  <p align="center"> <a href="https://www.youtube.com/watch?v=SGfBIGyRfQQ&list=PLuN-LNrfuteuvsmLg5ah5AkHaiBfrwKU5"> <img src="images/Youtube - First Multivehicle Experience.png" alt="Youtube - First Multivehicle Experience.png" width="640px"/> </a> </p>
 - **April, May, June 2022**: Attempts to model the city, initially using Google Earth and RenderDoc, then using OpenStreetMap with the Python module pyrosm and Blender, and finally directly in Unity using OpenStreetMap through the OsmSharp module.
-  <p align="center"> <img src="images/blender city.png" alt="blender city.png" width="840px"/>      <img src="images/blender render city.png" alt="blender render city.png" width="640px"/> </p>
+  <p align="center"> <img src="images/blender render city.png" alt="blender render city.png" width="640px"/><img src="images/blender city.png" alt="blender city.png" width="840px"/> </p>
 - **December 2022**: Implementation of a free camera and simulation of the vehicle engine based on its torque as a function of its revolutions per minute (using Bézier curves to approximate the data). Development of the manual or automatic gearbox and the Ackermann-Jeantaud steering system.
-  <iframe width="560" height="315" src="https://www.youtube.com/embed/7ZK4zMeQxKs?si=v8jgR5zfjKe3N1H0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+  <p align="center"> <a href="https://www.youtube.com/watch?v=7ZK4zMeQxKs&list=PLuN-LNrfuteuvsmLg5ah5AkHaiBfrwKU5"> <img src="images/Youtube - Ackermann-Jeantaud Steering Geogebra.png" alt="Youtube - Ackermann-Jeantaud Steering Geogebra.png" width="640px"/> </a> </p>
 - **January 2023**: Design and training of the second AI algorithm, now capable of observing its environment using obstacle detection rays to avoid them.
   <p align="center"> <img src="images/second environment.png" alt="second environment.png" width="1100px"/> </p>
 - **February, resumed mid-May 2023**: Modeling of the city using OpenStreetMap data in XML format and representing it with a data structure suitable for Unity. Triangulation of this data (notably with Seidel's algorithm) to transform it into 3D models.

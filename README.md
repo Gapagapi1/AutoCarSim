@@ -19,11 +19,11 @@ The methodologies and tools employed in this project are the result of a bibliog
 See [Results and Conclusion](#results-and-conclusion) for a drive through the city with the AI.
 
 ## Table of Contents
-- 
+
 - [Overview](#overview)
 - [Table of Contents](#table-of-contents)
 - [Project Motivation](#project-motivation)
-- [Project Presentation \& Current State](#project-presentation--current-state)
+- [Project Presentation & Current State](#project-presentation--current-state)
   - [Introduction](#introduction)
     - [Goals of the Simulation](#goals-of-the-simulation)
     - [Basic Features](#basic-features)
@@ -40,7 +40,7 @@ See [Results and Conclusion](#results-and-conclusion) for a drive through the ci
     - [Training in the City](#training-in-the-city)
   - [Results and Conclusion](#results-and-conclusion)
 - [Work Timeline](#work-timeline)
-- [Bibliography \& Project Justification](#bibliography--project-justification)
+- [Bibliography & Project Justification](#bibliography--project-justification)
   - [Annotated Bibliography](#annotated-bibliography)
   - [References](#references)
   

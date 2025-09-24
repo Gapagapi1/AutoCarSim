@@ -2,7 +2,7 @@
 
 <p align="center"> <img src="images/cover_image.png" alt="cover_image.png"/> </p>
 
-[Release 0.0.1](https://github.com/Gapagapi1/AutoCarSim/releases/tag/v0.0.1)
+[![GitHub release](https://img.shields.io/github/v/release/Gapagapi1/AutoCarSim?include_prereleases&label=Release)](https://github.com/Gapagapi1/AutoCarSim/releases/tag/v0.0.1)
 
 ## Overview
 

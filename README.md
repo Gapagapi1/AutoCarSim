@@ -2,6 +2,8 @@
 
 <p align="center"> <img src="images/cover_image.png" alt="cover_image.png"/> </p>
 
+[Release 0.0.1](https://github.com/Gapagapi1/AutoCarSim/releases/tag/v0.0.1)
+
 ## Overview
 
 This page presents a project I have worked on from February 2022 to June 2023. Its goal is to determine, through experimentation, necessary characteristics for an autonomous vehicle algorithm model using deep reinforcement learning, to study the relevance of its training in a virtual urban simulation, and to demonstrate the effectiveness of this algorithm by measuring the degree of complexity to which its response is satisfactory.
